@@ -5,6 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+
+        .todo__wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .todo__item {
+            position: relative;
+        }
+
+        .task-ckeck:checked + .todo__item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 2px;
+            background: #000000;
+
+        }
+
+
+
+    </style>
+
 </head>
 <body>
     <form action="" class="todo-form">
@@ -15,7 +43,6 @@
         <button class="button todo-form__button" type="button">Добавить</button>
     </form>
   <ul class="todo">
-      <li class="todo__item"></li>
   </ul> 
   
   <script src="script.js"></script>

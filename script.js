@@ -5,10 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const createNewNask = ()=>{
     if(newTaskName.value){ 
+      const taskWrapper = document.createElement('div')
+            taskWrapper.classList = 'todo__wrapper';
+      const taskCheck = document.createElement('input')
+            taskCheck.type = 'checkbox'
+            taskCheck.classList = 'task-ckeck'
+            taskCheck.name = ''
       const newTask = document.createElement('li');
         newTask.classList = 'todo__item';
         newTask.innerText = newTaskName.value;
-      taskList.append(newTask)
+      
+      taskList.append(taskWrapper)
+      taskWrapper.append(taskCheck)
+      taskWrapper.append(newTask)
     }
   }
   
