@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
   const taskList = document.querySelector('.todo')// список заданий
 
-  const createNewNask = ()=>{
-    if(newTaskName.value){ 
+  const createNewNask = () => {
+    if(newTaskName.value) { 
       const taskWrapper = document.createElement('div')
             taskWrapper.classList = 'todo__wrapper';
       const taskCheck = document.createElement('input')
@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
             taskCheck.classList = 'task-ckeck'
             taskCheck.name = ''
       const newTask = document.createElement('li');
-        newTask.classList = 'todo__item';
-        newTask.innerText = newTaskName.value;
+            newTask.classList = 'todo__item';
+            newTask.innerText = newTaskName.value;
       
       taskList.append(taskWrapper)
       taskWrapper.append(taskCheck)
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   
-  addNewTask.addEventListener('click', ()=>{
+  addNewTask.addEventListener('click', () => {
     createNewNask()
   })
 
