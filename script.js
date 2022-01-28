@@ -3,33 +3,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function todo(){
-  const addNewTaskBtn = document.querySelector('.todo-form__button')// кнопка добавления новой задачи
+  const parser = new DOMParser();
+  const formTodo = document.getElementById('todo1')
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
   const taskList = document.querySelector('.todo')// список заданий
   const taskDB = [] // ключ - название таска, значение - name input
 
   const createNewTask = () => {
-    if(newTaskName.value) { 
-      const taskWrapper = document.createElement('div')
-      taskWrapper.classList = 'todo__wrapper';
+    return `<li class=" todo__item"> <input  class="task-ckeck" type ="checkbox"> <span>${newTaskName.value}</span> </li>`
+  }
 
-      const taskCheck = document.createElement('input')
-      taskCheck.type = 'checkbox'
-      taskCheck.classList = 'task-ckeck'
-      taskCheck.name = ''
+  const addNewTsk  = () => {
+    // return parser.parseFromString(createNewTask(), "text/html")
+    return taskList.insertAdjacentHTML('beforeend',createNewTask() )
+  }
 
-      const newTask = document.createElement('li');
-      newTask.classList = 'todo__item';
-      newTask.innerText = newTaskName.value;
-      
-      taskList.append(taskWrapper)
-      taskWrapper.append(taskCheck)
-      taskWrapper.append(newTask)
-    }
+  const saveStateTask = () => {
+    return taskDB.push({
+      [newTaskName.name] : newTaskName.value,
+      checked: false
+    })
   }
   
-  addNewTaskBtn.addEventListener('click', () => {
-    createNewTask()
-    taskDB.push({[newTaskName.value] : newTaskName.name})
+  formTodo.addEventListener('submit', () => {
+    event.preventDefault();
+    addNewTsk()
+    saveStateTask()
   })
 }

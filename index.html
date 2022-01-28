@@ -13,11 +13,11 @@
             gap: 10px;
         }
 
-        .todo__item {
+        .todo__item span{
             position: relative;
         }
 
-        .task-ckeck:checked + .todo__item::after {
+        .task-ckeck:checked ~ span::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -32,12 +32,12 @@
 
 </head>
 <body>
-    <form action="" class="todo-form">
+    <form action="" class="todo-form" id="todo1">
         <label for="input">
             <span>Название задачи</span>
-            <input type="text" class="todo-form__new-task-name" name="input" >
+            <input type="text" class="todo-form__new-task-name" name="input" required>
         </label>
-        <button class="button todo-form__button" type="button">Добавить</button>
+        <button class="button todo-form__button">Добавить</button>
     </form>
   <ul class="todo">
   </ul> 
