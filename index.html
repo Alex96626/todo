@@ -4,41 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 
     <style>
 
-        .todo__wrapper {
-            display: flex;
-            gap: 10px;
-        }
-
-        .todo__item span{
-            position: relative;
-        }
-
-        .task-ckeck:checked ~ span::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            width: 100%;
-            height: 2px;
-            background: #000000;
-        }
+       
 
     </style>
 
 </head>
 <body>
-    <form action="" class="todo-form" id="todo1">
+    <form action="" class="todo-form"  id="todo1">
         <label for="input">
             <span>Название задачи</span>
             <input type="text" class="todo-form__new-task-name" name="input" required>
         </label>
         <button class="button todo-form__button">Добавить</button>
     </form>
+    <form action="" class="todo-form" data-form = "addTaskForm" id="todo1"></form>
   <ul class="todo">
   </ul> 
   
