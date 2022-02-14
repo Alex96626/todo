@@ -29,24 +29,19 @@ function todo(){
 
   const checkTaskStatus = () => {
     taskList.addEventListener('click', (event)=> {
-      const taskInfo = event.target.closest('.todo__item');// li-шка
+      const target = event.target
+      const taskInfo = target.closest('.todo__item');// li-шка
       if(!taskInfo.contains(taskInfo.querySelector('.task-ckeck'))) return;
-      if(event.target !== taskInfo.querySelector('.task-ckeck')) return;
-        const tastIndex = event.target.name.split('_').splice(1, 1).join()// получили интек такса
-        taskDB.forEach((e)=> {
-          if(e.index = tastIndex) {
-            event.target.checked ? e.checked = true : e.checked = false // смена состояния "выполено"
-          }
-        })
+      if(target !== taskInfo.querySelector('.task-ckeck')) return;
+      const tastIndex = target.name.split('_')[1]// получили индекс такса
+      taskDB[Number(tastIndex) - 1].checked = target.checked;
     })
   }
   
-  formTodo.addEventListener('submit', () => {
+  formTodo.addEventListener('submit', (event) => {
     event.preventDefault();
     addNewTask()
     saveStateTask()
     checkTaskStatus()
   })
-
-  
 }
