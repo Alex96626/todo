@@ -8,14 +8,14 @@ function todo(){
   const taskList = document.querySelector('.todo')// список заданий  
   const taskDB = [] // ключ - название таска, значение - name input
 
-  const createNewTask = (index, value) => {
+  const createNewTask = (index, value, checked) => {
     const getNewTask = document.createElement('li')
     getNewTask.classList = 'todo__item'
     const getTaskCheck = document.createElement('input')
-
-    getTaskCheck.classList = "task-check"
+    getTaskCheck.classList ="task-check"
     getTaskCheck.name = `task-name_${index}`
     getTaskCheck.type = 'checkbox'
+    getTaskCheck.checked = checked
     getTaskCheck.addEventListener('click', checkTaskStatus)
 
     const getTaskValue = document.createElement('span')
@@ -26,8 +26,8 @@ function todo(){
     return getNewTask;
   }
 
-  const addNewTask  = (newTaskIndex, newTaskValue, ) => {
-    return taskList.append(createNewTask(newTaskIndex, newTaskValue))
+  const addNewTask  = (newTaskIndex, newTaskValue, checked) => {
+    return taskList.append(createNewTask(newTaskIndex, newTaskValue, checked))
   }
 
   const saveStateTask = (index, value, checked) => {
@@ -45,6 +45,7 @@ function todo(){
       if(target !== taskInfo.querySelector('.task-check')) return;
       const taskIndex = target.name.split('_')[1]// получили индекс такса
       taskDB[Number(taskIndex) - 1].checked = target.checked;
+      saveLocalStorage(taskIndex)
       console.log(taskDB)
   }
 
@@ -53,15 +54,15 @@ function todo(){
   }
 
   (function loadFromLocalStorage () {
-    const getLocalStorageInfo = Object.entries(localStorage)
+    const getLocalStorageInfo = Object.values(localStorage)
     getLocalStorageInfo.map( (e)=> {
-      const index = JSON.parse(e[0])
-      const value = JSON.parse(e[1]).input
-      const checked  = JSON.parse(e[1]).checked
+      const index = JSON.parse(e).index
+      const value = JSON.parse(e).input
+      const checked  = JSON.parse(e).checked
 
       saveStateTask(index, value, checked)
-      createNewTask(index, index)
-      addNewTask(index, value)
+      createNewTask(index, value, checked)
+      addNewTask(index, value, checked)
     });
   }())
   
@@ -69,7 +70,7 @@ function todo(){
     const newTaskValue = newTaskName.value
     const newTaskIndex = taskDB.length + 1;
     event.preventDefault();
-    addNewTask(newTaskIndex, newTaskValue, saveStateTask(newTaskIndex, newTaskValue, false ))
+    addNewTask(newTaskIndex, newTaskValue, false, saveStateTask(newTaskIndex, newTaskValue, false ))
     saveLocalStorage(newTaskIndex)
     
   })
