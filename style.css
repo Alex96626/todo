@@ -15,7 +15,7 @@ body {
     position: relative;
 }
 
-.task-ckeck:checked ~ span::after {
+.task-check:checked ~ span::after {
     content: '';
     position: absolute;
     top: 50%;

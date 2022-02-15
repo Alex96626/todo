@@ -47,11 +47,30 @@ function todo(){
       taskDB[Number(taskIndex) - 1].checked = target.checked;
       console.log(taskDB)
   }
+
+  const saveLocalStorage = (newTaskIndex) => {
+    localStorage.setItem(String(newTaskIndex), JSON.stringify(taskDB[newTaskIndex - 1]))
+  }
+
+  (function loadFromLocalStorage () {
+    const getLocalStorageInfo = Object.entries(localStorage)
+    getLocalStorageInfo.map( (e)=> {
+      const index = JSON.parse(e[0])
+      const value = JSON.parse(e[1]).input
+      const checked  = JSON.parse(e[1]).checked
+
+      saveStateTask(index, value, checked)
+      createNewTask(index, index)
+      addNewTask(index, value)
+    });
+  }())
   
   formTodo.addEventListener('submit', (event) => {
     const newTaskValue = newTaskName.value
     const newTaskIndex = taskDB.length + 1;
     event.preventDefault();
     addNewTask(newTaskIndex, newTaskValue, saveStateTask(newTaskIndex, newTaskValue, false ))
+    saveLocalStorage(newTaskIndex)
+    
   })
 }
