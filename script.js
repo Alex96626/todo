@@ -1,47 +1,57 @@
 document.addEventListener("DOMContentLoaded", () => {
   todo();
-  
 });
 
 function todo(){
   const formTodo = document.getElementById('todo1')
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
-  const taskList = document.querySelector('.todo')// список заданий  const taskDB = [] // ключ - название таска, значение - name input
+  const taskList = document.querySelector('.todo')// список заданий  
   const taskDB = [] // ключ - название таска, значение - name input
-  const createNewTask = (index, {title}) => {
-    return `<li class="todo__item"> 
-            <input  class="task-ckeck" name="task-name_${index}"type="checkbox">
-            <span>${title}</span>
-            </li>`
+
+  const createNewTask = (index, value) => {
+    const getNewTask = document.createElement('li')
+    getNewTask.classList = 'todo__item'
+    const getTaskCheck = document.createElement('input')
+
+    getTaskCheck.classList = "task-check"
+    getTaskCheck.name = `task-name_${index}`
+    getTaskCheck.type = 'checkbox'
+    getTaskCheck.addEventListener('click', checkTaskStatus)
+
+    const getTaskValue = document.createElement('span')
+    getTaskValue.innerText = value
+    getNewTask.append(getTaskCheck)
+    getNewTask.append(getTaskValue)
+
+    return getNewTask;
   }
 
-  const addNewTask  = () => {
-    return taskList.insertAdjacentHTML('beforeend', (createNewTask(taskDB.length + 1, {title: newTaskName.value})) )
+  const addNewTask  = (newTaskIndex, newTaskValue, ) => {
+    return taskList.append(createNewTask(newTaskIndex, newTaskValue))
   }
 
-  const saveStateTask = () => {
+  const saveStateTask = (index, value, checked) => {
     return taskDB.push({
-      index: taskDB.length + 1,
-      [newTaskName.name] : newTaskName.value,
-      checked: false
+      index: index,
+      [newTaskName.name] : value,
+      checked: checked
     })
   }
 
-  const checkTaskStatus = () => {
-    taskList.addEventListener('click', (event)=> {
+  const checkTaskStatus = (event) => {
       const target = event.target
       const taskInfo = target.closest('.todo__item');// li-шка
-      if(!taskInfo.contains(taskInfo.querySelector('.task-ckeck'))) return;
-      if(target !== taskInfo.querySelector('.task-ckeck')) return;
-      const tastIndex = target.name.split('_')[1]// получили индекс такса
-      taskDB[Number(tastIndex) - 1].checked = target.checked;
-    })
+      if(!taskInfo.contains(taskInfo.querySelector('.task-check'))) return;
+      if(target !== taskInfo.querySelector('.task-check')) return;
+      const taskIndex = target.name.split('_')[1]// получили индекс такса
+      taskDB[Number(taskIndex) - 1].checked = target.checked;
+      console.log(taskDB)
   }
   
   formTodo.addEventListener('submit', (event) => {
+    const newTaskValue = newTaskName.value
+    const newTaskIndex = taskDB.length + 1;
     event.preventDefault();
-    addNewTask()
-    saveStateTask()
-    checkTaskStatus()
+    addNewTask(newTaskIndex, newTaskValue, saveStateTask(newTaskIndex, newTaskValue, false ))
   })
 }
