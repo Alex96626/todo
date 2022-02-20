@@ -6,7 +6,7 @@ function todo(){
   const formTodo = document.getElementById('todo1')
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
   const taskListOnBoard = document.querySelector('.todo')// список заданий  
-  const taskDB = [] // ключ - название таска, значение - name input
+  const taskDB = JSON.parse(localStorage.getItem('taskList')) ?? []/// ключ - название таска, значение - name input
 
   
 
@@ -31,7 +31,7 @@ function todo(){
   }
 
   const appendTasks  = (taskList) => {
-    taskListOnBoard.append(...taskList.map( (item) => {return createNewTask(item)}))
+    taskListOnBoard.append(...taskList.map( createNewTask ))
   }
 
   const saveStateTask = ({index, value, checked}) => {
@@ -44,12 +44,8 @@ function todo(){
 
   const checkTaskStatus = (event) => {
       const target = event.target
-      const taskInfo = target.closest('.todo__item');// li-шка
-
-      if(!taskInfo.contains(taskInfo.querySelector('.task-check'))) return;
-      if(target !== taskInfo.querySelector('.task-check')) return;
-      
       const taskIndex = target.name.split('_')[1]// получили индекс такса
+      
       taskDB[Number(taskIndex) - 1].checked = target.checked;
       
       saveLocalStorage(taskIndex)
@@ -60,24 +56,9 @@ function todo(){
   }
 
   const loadFromLocalStorage = () => {
-    const getLocalStorageInfo = JSON.parse(localStorage.getItem('taskList'))
 
-    if(getLocalStorageInfo){
-    getLocalStorageInfo.forEach((e) => {
-      
-      const localStorageTaskInfo = {
-        index : e.index,
-        value : e.value, 
-        checked : e.checked
-      }
-      saveStateTask(localStorageTaskInfo)
-      
-    })
-
-      saveLocalStorage()
       appendTasks(taskDB)
-
-    }
+    
   }
   
   loadFromLocalStorage()
