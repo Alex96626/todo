@@ -6,9 +6,7 @@ function todo(){
   const formTodo = document.getElementById('todo1')
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
   const taskListOnBoard = document.querySelector('.todo')// список заданий  
-  const taskDB = JSON.parse(localStorage.getItem('taskList')) ?? []/// ключ - название таска, значение - name input
-
-  
+  const tasksList = JSON.parse(localStorage.getItem('taskList')) ?? []/// ключ - название таска, значение - name input
 
   const createNewTask = ({index, value, checked}) => {
 
@@ -20,7 +18,7 @@ function todo(){
     getTaskCheck.name = `task-name_${index}`
     getTaskCheck.type = 'checkbox'
     getTaskCheck.checked = checked
-    getTaskCheck.addEventListener('click', checkTaskStatus)
+    getTaskCheck.addEventListener('click', switchTaskStatus)
 
     const getTaskValue = document.createElement('span')
     getTaskValue.innerText = value
@@ -34,46 +32,47 @@ function todo(){
     taskListOnBoard.append(...taskList.map( createNewTask ))
   }
 
-  const saveStateTask = ({index, value, checked}) => {
-    return taskDB.push({
+  const addTaskInList = ({index, value, checked}) => {
+    tasksList.push ({
       index: index,
       value : value,
       checked: checked
     })
   }
 
-  const checkTaskStatus = (event) => {
-      const target = event.target
-      const taskIndex = target.name.split('_')[1]// получили индекс такса
-      
-      taskDB[Number(taskIndex) - 1].checked = target.checked;
-      
-      saveLocalStorage(taskIndex)
+  const switchTaskStatus = (event) => {
+    const target = event.target
+    const taskIndex = target.name.split('_')[1]// получили индекс такса
+    
+    tasksList[Number(taskIndex) - 1].checked = target.checked;
+    
+    setToLocalStorage(taskIndex)
   }
 
-  const saveLocalStorage = () => {
-    localStorage.setItem('taskList', JSON.stringify(taskDB))
+  const setToLocalStorage = () => {
+    localStorage.setItem('taskList', JSON.stringify(tasksList))
   }
 
-  const loadFromLocalStorage = () => {
+  const showTasksFromLocalStorage = () => {
 
-      appendTasks(taskDB)
+    appendTasks(tasksList)
     
   }
   
-  loadFromLocalStorage()
+  showTasksFromLocalStorage()
   
   formTodo.addEventListener('submit', (event) => {
     event.preventDefault()
+    
     const taskInfo = {
-      index : taskDB.length + 1,
+      index : tasksList.length + 1,
       value : newTaskName.value,
       checked : false,
     }
-    saveStateTask(taskInfo )
-    appendTasks([taskInfo])
 
-    saveLocalStorage()
+    addTaskInList(taskInfo )
+    appendTasks([taskInfo])
+    setToLocalStorage()
     
   })
 }
