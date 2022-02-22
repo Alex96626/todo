@@ -5,25 +5,43 @@ document.addEventListener("DOMContentLoaded", () => {
 function todo(){
   const formTodo = document.getElementById('todo1')
   const newTaskName = document.querySelector('.todo-form__new-task-name')// имя новой задачи
+  const newTaskDescription = document.querySelector('.todo-form__task-description')
   const taskListOnBoard = document.querySelector('.todo')// список заданий  
   const tasksList = JSON.parse(localStorage.getItem('taskList')) ?? []/// ключ - название таска, значение - name input
 
-  const createNewTask = ({index, value, checked}) => {
+  const createNewTask = ({index, value, checked, description}) => {
 
     const getNewTask = document.createElement('li')
     getNewTask.classList = 'todo__item'
+    getNewTask.setAttribute('data-task-number', index)
+
     const getTaskCheck = document.createElement('input')
-    
     getTaskCheck.classList ="task-check"
     getTaskCheck.name = `task-name_${index}`
     getTaskCheck.type = 'checkbox'
     getTaskCheck.checked = checked
-    getTaskCheck.addEventListener('click', switchTaskStatus)
+    getTaskCheck.addEventListener('click', switchTaskAnyValue)
 
     const getTaskValue = document.createElement('span')
     getTaskValue.innerText = value
+
+    const getTaskDescription = document.createElement('p')
+    getTaskDescription.classList = 'task-description'
+    getTaskDescription.innerText = description
+    getTaskDescription.addEventListener('click', switchTaskAnyValue)
+
+    const getTaskDate = document.createElement('p')
+    getTaskDate.classList = 'task-date'
+    const nowDay = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()
+    const nowMonth = new Date().getMonth() < 10 ? '0' + new Date().getMonth() : new Date().getMonth()
+    const nowYear = new Date().getFullYear()
+    getTaskDate.innerText = nowDay + '.' + nowMonth+ '.' + nowYear;
+
     getNewTask.append(getTaskCheck)
     getNewTask.append(getTaskValue)
+    getNewTask.append(getTaskDescription)
+    getNewTask.append(getTaskDate)
+
 
     return getNewTask // созданая НОД(li)
   }
@@ -32,21 +50,24 @@ function todo(){
     taskListOnBoard.append(...taskList.map( createNewTask ))
   }
 
-  const addTaskInList = ({index, value, checked}) => {
+  const addTaskInList = ({index, value, checked, description}) => {
     tasksList.push ({
       index: index,
       value : value,
+      description : description,
       checked: checked
     })
   }
 
-  const switchTaskStatus = (event) => {
+  const switchTaskAnyValue = (event) => {
     const target = event.target
-    const taskIndex = target.name.split('_')[1]// получили индекс такса
-    
-    tasksList[Number(taskIndex) - 1].checked = target.checked;
-    
-    setToLocalStorage(taskIndex)
+    const taskIndex = target.closest('.todo__item').dataset.taskNumber// получили индекс такса
+
+    if (target.classList. contains('task-check')) {
+      tasksList[Number(taskIndex) - 1].checked = target.checked;
+    }
+  
+    setToLocalStorage()
   }
 
   const setToLocalStorage = () => {
@@ -63,10 +84,11 @@ function todo(){
   
   formTodo.addEventListener('submit', (event) => {
     event.preventDefault()
-    
+
     const taskInfo = {
       index : tasksList.length + 1,
       value : newTaskName.value,
+      description : newTaskDescription.value,
       checked : false,
     }
 
