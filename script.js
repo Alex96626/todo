@@ -28,7 +28,6 @@ function todo(){
     const getTaskDescription = document.createElement('p')
     getTaskDescription.classList = 'task-description'
     getTaskDescription.innerText = description
-    getTaskDescription.addEventListener('click', switchTaskAnyValue)
 
     const getTaskDate = document.createElement('p')
     getTaskDate.classList = 'task-date'
