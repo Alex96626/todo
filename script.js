@@ -84,15 +84,16 @@ function todo(){
   
   formTodo.addEventListener('submit', (event) => {
     event.preventDefault()
-    const nowDay = new Date().getDate()
-    const nowMonth = new Date().getMonth()
-    const nowYear = new Date().getFullYear()
+    const date = new Date()
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
     const taskInfo = {
       index : tasksList.length + 1,
       value : newTaskName.value,
       description : newTaskDescription.value,
       checked : false,
-      date : (nowDay < 10 ? '0' + nowDay : nowDay) + '.' + (nowMonth < 10 ? '0' + nowMonth : nowMonth) + '.' + (nowYear),
+      date : (day < 10 ? '0' + day : day) + '.' + (month < 10 ? '0' + month : month) + '.' + (year),
     }
 
 
