@@ -32,15 +32,12 @@ function todo(){
 
     const getTaskDate = document.createElement('p')
     getTaskDate.classList = 'task-date'
-    // const nowDay = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()
-    // const nowMonth = new Date().getMonth() < 10 ? '0' + new Date().getMonth() : new Date().getMonth()
-    // const nowYear = new Date().getFullYear()
     getTaskDate.innerText = date
+
     getNewTask.append(getTaskCheck)
     getNewTask.append(getTaskValue)
     getNewTask.append(getTaskDescription)
     getNewTask.append(getTaskDate)
-
 
     return getNewTask // созданая НОД(li)
   }
@@ -49,14 +46,8 @@ function todo(){
     taskListOnBoard.append(...taskList.map( createNewTask ))
   }
 
-  const addTaskInList = ({index, value, checked, description, date}) => {
-    tasksList.push ({
-      index: index,
-      value : value,
-      description : description,
-      checked: checked,
-      date:date,
-    })
+  const addTaskInList = (taskInfo) => {
+    tasksList.push (taskInfo)
   }
 
   const switchTaskAnyValue = (event) => {
@@ -85,7 +76,7 @@ function todo(){
   formTodo.addEventListener('submit', (event) => {
     event.preventDefault()
     const date = new Date()
-    const day = date.getDate()
+    const day =  date.getDate()
     const month = date.getMonth()
     const year = date.getFullYear()
     const taskInfo = {
@@ -93,7 +84,7 @@ function todo(){
       value : newTaskName.value,
       description : newTaskDescription.value,
       checked : false,
-      date : (day < 10 ? '0' + day : day) + '.' + (month < 10 ? '0' + month : month) + '.' + (year),
+      date : (day < 10 ? (''+day).padStart(2,0) : day) + '.' + (month < 10 ? (''+month).padStart(2,0) : month) + '.' + (year),
     }
 
 
